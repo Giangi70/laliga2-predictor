@@ -1,31 +1,18 @@
-"""Configurazione centralizzata del progetto."""
+"""Configurazione La Liga 2 — usa betting-core."""
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from betting_core import PredictorConfig
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).parent.parent
-DATA_RAW = BASE_DIR / "data" / "raw"
-DATA_PROCESSED = BASE_DIR / "data" / "processed"
-DATA_EXPORTS = BASE_DIR / "data" / "exports"
-MODELS_DIR = BASE_DIR / "models"
-
-# Stagioni La Liga 2 su football-data.co.uk
-SEASONS = ["1617", "1718", "1819", "1920", "2021", "2122", "2223", "2324", "2425"]
-FOOTBALL_DATA_URL = "https://www.football-data.co.uk/mmz4281/{season}/SP2.csv"
-
-# Quote bookmaker da usare come feature
-BOOKMAKERS = {
-    "B365": "Bet365",
-    "WH":   "William Hill",
-    "IW":   "Interwetten",
-    "PS":   "Pinnacle",
-    "VC":   "VC Bet",
-}
-
-# The Odds API
-ODDS_API_KEY = os.getenv("ODDS_API_KEY", "")
-ODDS_API_URL = "https://api.the-odds-api.com/v4/sports/soccer_spain_segunda_division/odds"
-
-DB_PATH = BASE_DIR / "data" / "laliga2.db"
+cfg = PredictorConfig(
+    name="La Liga 2",
+    csv_prefix="laliga2",
+    seasons=["1617", "1718", "1819", "1920", "2021", "2122", "2223", "2324", "2425"],
+    download_url="https://www.football-data.co.uk/mmz4281/{season}/SP2.csv",
+    odds_api_url="https://api.the-odds-api.com/v4/sports/soccer_spain_segunda_division/odds",
+    odds_api_key=os.getenv("ODDS_API_KEY", ""),
+    base_dir=Path(__file__).parent.parent,
+    streamlit_port=8503,
+)
